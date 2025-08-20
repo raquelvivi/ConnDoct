@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Alert, StyleSheet, Text, Image, Dimensions } from "react-native";
+import { View, StyleSheet, Text, Image, Dimensions } from "react-native";
 import { Calendar, CalendarUtils } from "react-native-calendars";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     width: 140,
     backgroundColor: "#4686ffff",
     marginRight: 20,
-    marginBottom: 100
+    marginBottom: 60
 
 
   }
