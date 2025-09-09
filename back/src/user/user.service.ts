@@ -24,52 +24,60 @@ export class UserService {
 
   // users: User[] = [];
 
-  // addUser(newUser: User): User {
-  //   const nextId = this.users.length > 0 ? this.users[this.users.length - 1].id + 1 : 1;
-  //   newUser.id = nextId;
-  //   this.users.push(newUser);
-  //   return newUser;
-  // }
+  
 
   getUsers(): Promise<User[]> {
     return this.userRepository.find(); // fazer a pesquisa no repositorio
   }
 
-  // getUser(id: number): User | undefined{
-  //   return this.users.find(u => u.id == id);
-  // }
+  async getUser(id: number): Promise<User> {
+     
+    let algo = await this.userRepository.findOneBy({ id });
 
-  // replaceUser(id: number, newData: User): User {
-  //   const index = this.users.findIndex(u => u.id == id);
-  //   if (index === -1) throw new NotFoundException();
+    if (!algo){
+      throw new NotFoundException(`{o id com o numero ${id} não foi achado}`)
+    }
+    return algo
+  }
 
-  //   newData.id = id;
-  //   this.users[index] = newData;
+  async addUser(user: User): Promise<User> {
+    let algo = await this.userRepository.save(user);
 
-  //   return newData;
-  // }
-
-  // updateUser(id: number, newData: User): User {
-  //   const index = this.users.findIndex(u => u.id == id);
-  //   if (index === -1) throw new NotFoundException();
-
-  //   const user = this.users[index];
-
-  //   if (newData.name) user.name = newData.name;
-  //   if (newData.age) user.age = newData.age;
-  //   if (newData.uf) user.uf = newData.uf;
-  //   this.users[index] = user;
-
-  //   return user;
-  // }
+    if (!algo) {
+      throw new NotFoundException(`{não foi possivel cadastrar}`)
+    }
+    return algo
+  }
+  
 
 
-  // deleteUser(id: number): boolean {
-  //   const index = this.users.findIndex(u => u.id == id);
-  //   if (index === -1) throw new NotFoundException();
 
-  //   this.users.splice(index, 1);
-  //   return true;
-  // }
+async replaceUser(id: number, user: User): Promise < User > {
+  const existingUser = await this.userRepository.findOne({ where: { id } });
+
+  if(!existingUser) {
+    throw new NotFoundException(`Usuário com id ${id} não encontrado`);
+  }
+
+  // substitui os dados
+  await this.userRepository.update(id, user);
+
+  // busca o registro atualizado
+  let algo = await this.userRepository.findOne({ where: { id } });
+
+  if (!algo) {
+    throw new NotFoundException(`{não foi possivel achar o dado modificado}`)
+  }
+  return algo
+
+}
+
+  async remove(id: number): Promise<void> {
+    const result = await this.userRepository.delete(id);
+    if (!result) {
+      throw new NotFoundException(`não deu para apagar o usuario com id: ${id}`);
+    }
+  }
+
 
 }

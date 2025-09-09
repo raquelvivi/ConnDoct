@@ -8,37 +8,36 @@ export class UserController {
     constructor(private readonly userService: UserService) {}
 
 
-  // @Post()
-  // addUser(@Body() user: User): User {
-  //   return this.userService.addUser(user);
-  // }
-
-
   @Get()
   getUsers(): Promise<User[]> {
     return this.userService.getUsers();
   }
 
 
-  // @Get(":id")
-  // getUser(@Param("id") id: number): User | undefined {
-  //   return this.userService.getUser(id);
-  // }
+  @Get(':id')
+  getUser(@Param('id') id: number): Promise<User> {
+    
+    return this.userService.getUser(id);
+  }
 
-  // @Put(":id")
-  // replaceUser(@Param("id") id: number, @Body() newData: User): User {
-  //   return this.userService.replaceUser(id, newData);
-  // }
 
-  // @Patch(":id")
-  // updateUser(@Param("id") id: number, @Body() newData: User): User {
-  //   return this.userService.updateUser(id, newData);
-  // }
+  @Post()
+  addUser(@Body() user: User): Promise<User> {
+    return this.userService.addUser(user);
+  }
 
-  // @Delete(":id")
-  // deleteUser(@Param("id") id: number): boolean {
-  //   return this.userService.deleteUser(id);
-  // }
+
+
+  @Put(":id")
+  replaceUser(@Param("id") id: number, @Body() newData: User): Promise<User> {
+    return this.userService.replaceUser(id, newData);
+  }
+
+
+  @Delete(':id')
+  removeUser(@Param('id') id: number): Promise<void> {
+    return this.userService.remove(id);
+  }
 
 
 }
