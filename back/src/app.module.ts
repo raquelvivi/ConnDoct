@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
+import { ExameModule } from './exame/exame.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 
@@ -16,6 +17,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: false, // para que essa bosta serve????????????
     }),
     UserModule,
+    ExameModule,
   ],
 })
 export class AppModule { }
