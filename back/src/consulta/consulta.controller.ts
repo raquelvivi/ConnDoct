@@ -3,7 +3,7 @@ import { Controller, Get, Post, Patch, Put, Delete, Body, Param } from '@nestjs/
 import { ConsultaService } from './consulta.service';
 import { Consulta } from './consulta.entity';
 
-@Controller('Consultas') //dentro dos parenteses coloque o nome da rota ex: 'teste' e então tera de pesquisar http://localhost:3000/teste
+@Controller('consultas') //dentro dos parenteses coloque o nome da rota ex: 'teste' e então tera de pesquisar http://localhost:3000/teste
 export class ConsultaController {
   constructor(private readonly consultaService: ConsultaService) { }
 
@@ -20,6 +20,11 @@ export class ConsultaController {
     return this.consultaService.getConsulta(id);
   }
 
+  @Get('pessoa/:id')
+  getConsultaPessoa(@Param('id') id: number) {
+
+    return this.consultaService.getConsultaPessoa(id);
+  }
 
   @Post()
   addConsulta(@Body() consulta: Consulta): Promise<Consulta> {

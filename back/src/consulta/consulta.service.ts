@@ -26,9 +26,22 @@ export class ConsultaService {
 
 
 
-  getConsultas(): Promise<Consulta[]> {
-    return this.consultaRepository.find(); // fazer a pesquisa no repositorio
+  async getConsultas(): Promise<Consulta[]> {
+    let algo = await this.consultaRepository.query(
+      `SELECT p.nome AS "paciente",
+        p.id, c.hora, c.data,
+        m.nome AS "medico",
+        h.nome AS "hospital"
+        from pessoa p 
+        inner join consulta c on p.id = c.pessoa
+        inner join medico m on c.medico = m.id
+        inner join hospital h on c.hospital = h.id
+    `)
+
+    return algo
   }
+
+
 
   async getConsulta(id: number): Promise<Consulta> {
 
@@ -39,6 +52,27 @@ export class ConsultaService {
     }
     return algo
   }
+
+  async getConsultaPessoa(id: number) {
+
+    let algo = await this.consultaRepository.query(
+      `SELECT p.nome AS "paciente",
+        p.id, c.hora, c.data,
+        m.nome AS "medico",
+        h.nome AS "hospital"
+        from pessoa p 
+        inner join consulta c on p.id = c.pessoa
+        inner join medico m on c.medico = m.id
+        inner join hospital h on c.hospital = h.id
+        WHERE p.id = $1
+    `, [id])
+
+    if (!algo) {
+      throw new NotFoundException(`{o id com o numero ${id} não foi achado}`)
+    }
+    return algo
+  }
+
 
   async addConsulta(consulta: Consulta): Promise<Consulta> {
     let algo = await this.consultaRepository.save(consulta);

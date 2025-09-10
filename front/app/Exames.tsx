@@ -1,12 +1,65 @@
 
 import { Text, View, Image, Dimensions, StyleSheet, ScrollView } from "react-native";
 
+import React, { useState, useEffect } from 'react';
 
+import Linha from "@/components/ex-con";
+import LinhaC from "@/components/ex-con copy";
+import { Exame, Consultas } from '../type'
+
+// import Lixeiras from '../components/lixeira';
+// import IconeLink from '../components/iconeLink';
+
+// import frasesReciclagem from '../data/frasesReciclagem';
+// import { Lixeira } from '../type'
 
 const deviceWidth = Dimensions.get('window').width;
 
 
+
 export default function Exames() {
+
+  const [dado, setDados] = useState<Exame[]>([]);
+
+  const [dadoC, setDadosC] = useState<Consultas[]>([]);
+  
+  useEffect(() => {
+    const fetchDados = async () => {
+      try {
+        const res = await fetch(`http://192.168.18.52:3000/exames`);
+        const data: Exame[] = await res.json();
+        setDados(data);
+
+        // Espera 3 segundos DEPOIS que os dados chegaram
+        // setTimeout(() => {
+        //   setLoading(false);
+        // }, 25000); // 25000
+
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
+      }
+    };
+
+    const fetchConsultas = async () => {
+      try {
+        const res = await fetch(`http://192.168.18.52:3000/Consultas`);
+        const data: Consultas[] = await res.json();
+        console.log(data);
+        setDadosC(data);
+
+        // Espera 3 segundos DEPOIS que os dados chegaram
+        // setTimeout(() => {
+        //   setLoading(false);
+        // }, 25000); // 25000
+
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
+      }
+    };
+
+    fetchConsultas()
+    fetchDados();
+  }, []);
 
 
   return (
@@ -20,39 +73,11 @@ export default function Exames() {
 
       <View style={[styles.linha]}></View>
 
-      <View style={[styles.conteine]}>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={[styles.texto2]}>03/02</Text>
-          <Text style={[styles.texto2]}>Exame de Sangue</Text>
-        </View>
-        <Text style={[styles.texto3]}>Resultado</Text>
-      </View>
-
-
-      <View style={[styles.conteine2]}>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={[styles.texto2, { color: "#003099" }]}>20/05</Text>
-          <Text style={[styles.texto2, { color: "#003099" }]}>Exame de Urina</Text>
-        </View>
-        <Text style={[styles.texto3, { color: "#9db512ff" }]}>Em Analise</Text>
-      </View>
-
-      <View style={[styles.conteine]}>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={[styles.texto2]}>13/06</Text>
-          <Text style={[styles.texto2]}>Exame do Covid-19</Text>
-        </View>
-        <Text style={[styles.texto3, { color: "#ff2222ff" }]}>Problema</Text>
-      </View>
-
-      <View style={[styles.conteine2]}>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={[styles.texto2, { color: "#003099" }]}>03/02 -</Text>
-          <Text style={[styles.texto2, { color: "#003099" }]}>Exame de Sangue</Text>
-        </View>
-        <Text style={[styles.texto3, { color: "#ff2222ff" }]}>Problema</Text>
-      </View>
-
+      <ScrollView style={{maxHeight: 450}}>
+        {dado.map((item, index) => (
+          <Linha key={item.id} dado={item} algo={index % 2} />
+        ))}
+      </ScrollView>
 
 
       <View style={{ marginTop: 60, flexDirection: "row", width: deviceWidth, marginBottom: 20 }}>
@@ -61,6 +86,13 @@ export default function Exames() {
 
 
       <View style={[styles.linha]}></View>
+
+
+      <ScrollView style={{ maxHeight: 450 }}>
+        {dadoC.map((item, index) => (
+          <LinhaC key={item.id} dado={item} algo={index % 2} />
+        ))}
+      </ScrollView>
 
 
     </View>

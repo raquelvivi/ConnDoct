@@ -3,7 +3,7 @@ import { Controller, Get, Post, Patch, Put, Delete, Body, Param } from '@nestjs/
 import { ExameService } from './exame.service';
 import { Exame } from './exame.entity';
 
-@Controller('Exames') //dentro dos parenteses coloque o nome da rota ex: 'teste' e então tera de pesquisar http://localhost:3000/teste
+@Controller('exames') //dentro dos parenteses coloque o nome da rota ex: 'teste' e então tera de pesquisar http://localhost:3000/teste
 export class ExameController {
     constructor(private readonly exameService: ExameService) {}
 

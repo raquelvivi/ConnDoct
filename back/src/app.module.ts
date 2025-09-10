@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { ExameModule } from './exame/exame.module';
+import { ConsultaModule } from './consulta/consulta.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 
@@ -18,6 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     UserModule,
     ExameModule,
+    ConsultaModule,
   ],
 })
 export class AppModule { }
